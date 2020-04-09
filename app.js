@@ -143,7 +143,7 @@ var financeController = (function () {
       data.tusuv = data.totals.inc - data.totals.exp;
 
       // Хувийг тооцоолно.
-      data.huvi = Math.round((data.totals.exp / data.totals.inc) * 100);
+      data.huvi = Math.floor((data.totals.exp / data.totals.inc) * 100);
     },
 
     tusviigAvah: function () {
