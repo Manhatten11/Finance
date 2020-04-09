@@ -7,6 +7,10 @@ var uiController = (function () {
     addBtn: ".add__btn",
     incomeList: ".income__list",
     expenseList: ".expenses__list",
+    tusuvLabel: ".budget__value",
+    incomeLabel: ".budget__income--value",
+    expenseLabel: ".budget__expenses--value",
+    percentageLabel: ".budget__expenses--percentage",
   };
 
   return {
@@ -39,6 +43,25 @@ var uiController = (function () {
       // for (var i = 0; i < fieldsArr.length; i++) {
       //   fieldsArr[i].value = "";
       // }
+    },
+    //  tusuv: data.tusuv,
+    // huvi: data.huvi,
+    // totalInc: data.totals.inc,
+    // totalExp: data.totals.exp,
+    tusviigUzuuleh: function (tusuv) {
+      document.querySelector(DOMstrings.tusuvLabel).textContent = tusuv.tusuv;
+      document.querySelector(DOMstrings.incomeLabel).textContent =
+        tusuv.totalInc;
+      document.querySelector(DOMstrings.expenseLabel).textContent =
+        tusuv.totalExp;
+
+      if (tusuv.huvi !== 0) {
+        document.querySelector(DOMstrings.percentageLabel).textContent =
+          tusuv.huvi + "%";
+      } else {
+        document.querySelector(DOMstrings.percentageLabel).textContent =
+          tusuv.huvi;
+      }
     },
 
     addListItem: function (item, type) {
@@ -120,7 +143,7 @@ var financeController = (function () {
       data.tusuv = data.totals.inc - data.totals.exp;
 
       // Хувийг тооцоолно.
-      data.huvi = Math.round(data.totals.exp / data.totals.inc);
+      data.huvi = Math.round((data.totals.exp / data.totals.inc) * 100);
     },
 
     tusviigAvah: function () {
@@ -178,10 +201,10 @@ var appController = (function (uiController, financeController) {
       financeController.tusuvTootsooloh();
 
       // 5. Эцсийн үлдэгдэл
-      var tusuv = financeController.tusviigAvah;
+      var tusuv = financeController.tusviigAvah();
 
       // тооцоог дэлгэцэнд гаргана.
-      console.log(tusuv);
+      uiController.tusviigUzuuleh(tusuv);
     }
   };
 
@@ -202,6 +225,12 @@ var appController = (function (uiController, financeController) {
   return {
     init: function () {
       console.log("Application started....");
+      uiController.tusviigUzuuleh({
+        tusuv: 0,
+        huvi: 0,
+        totalInc: 0,
+        totalExp: 0,
+      });
       setupEventListener();
     },
   };
